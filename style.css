@@ -12,7 +12,7 @@ body {
     font-size: 18px;
     color: var(--tg-theme-text-color);
     background: var(--tg-theme-bg-color);
-    background-image: url('./bg_img.png');/*https://i.imgur.com/R6tiUsR.png*/
+    background-image: url('./bg_img.jpg');/*https://i.imgur.com/R6tiUsR.png*/
     /* https://i.imgur.com/pQG6z5X.png https://i.imgur.com/EGvFXUl.png*/
     background-size: cover;
     background-position: center;
