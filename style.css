@@ -1,0 +1,849 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+	 
+	font-family: 'Fredoka', sans-serif;
+	font-weight: bold;
+    min-height: 100vh;
+    font-size: 18px;
+    color: var(--tg-theme-text-color);
+    background: var(--tg-theme-bg-color);
+    background-image: url('./bg_img.png');/*https://i.imgur.com/R6tiUsR.png*/
+    /* https://i.imgur.com/pQG6z5X.png https://i.imgur.com/EGvFXUl.png*/
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* <-- важное для длинных страниц */
+}
+
+
+
+
+
+
+
+.container {
+	max-width: 390px;
+	margin: auto;
+}
+
+.inner {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+	padding: 10px;
+}
+
+.img {
+	width: 150px;
+	max-width: 100%;
+	height: auto;
+}
+
+.item {
+	text-align: center;
+
+	background-color: rgb(25, 28, 33);
+	border-radius: 10px;
+	padding: 10px;
+	margin-bottom: 10px;
+	transition: all 0.3s ease;
+}
+
+.btn:hover {
+	background: rgb(69, 177, 69);
+}
+
+.usercard {
+	text-align: center;
+	margin-top: 20px;
+	padding: 10px;
+	background-color: rgba(116, 96, 96, 0.177);
+	border-radius: 10px;
+	color: white;
+	font-weight: bold;
+}
+
+
+.top-bar {
+    width: 100%;
+    max-width: 390px; /* НОВОЕ: Ограничивает ширину до 390px */
+    margin: 0 auto; /* НОВОЕ: Центрирует панель */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0; /* Оставьте это для фиксации, но content будет внутри max-width */
+    z-index: 1000;
+    /* background-color: rgba(25, 28, 33, 0.9); */ /* Если хотите фон */
+    /* backdrop-filter: blur(10px); */
+    /* -webkit-backdrop-filter: blur(10px); */
+    box-sizing: border-box;
+
+    /* background-color: var(--tg-theme-bg-color);   */
+    transition: transform 0.3s ease-in-out; /* Плавный переход */
+}
+
+.top-bar.hidden-on-scroll {
+    transform: translateY(-100%); /* Сдвигает панель вверх, скрывая ее */
+}
+
+
+.top-row,
+.bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+}
+
+#searchForm {
+    flex: 1;
+    position: relative; /* Для позиционирования корзины внутри */
+    padding-right: 60px; /* Оставляем место для корзины */
+    /* max-width: 240px; */
+}
+
+ 
+
+/* #searchInput {
+    width: 95%;
+} */
+
+#searchInput {
+    flex: 1; /* займёт оставшееся место */
+    max-width: 150px; /* ограничь максимальную ширину */
+    width: auto;
+	padding: 10px 14px;
+	font-size: 16px;
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	border-radius: 8px;
+	background-color: rgba(255, 255, 255, 0.15);
+	color: #fff;
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	transition: background 0.3s ease, border 0.3s ease;
+}
+
+#searchInput::placeholder {
+	color: rgba(255, 255, 255, 0.6);
+}
+
+#searchInput:focus {
+	background-color: rgba(255, 255, 255, 0.25);
+	border-color: rgba(255, 255, 255, 0.6);
+	outline: none;
+}
+
+.price {
+	display: inline-block;
+	background: rgba(255, 255, 255, 0.15);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	border-radius: 10px;
+	padding: 4px 10px;
+	font-size: 16px;
+	color: #ffcc00;
+	font-weight: 700;
+	text-transform: uppercase;
+	vertical-align: middle;
+}
+
+
+.btn {
+	display: inline-block;
+	padding: 10px 20px;
+	border: none;
+	background: rgb(248, 168, 24);
+	border-radius: 10px;
+	color: #fff;
+	text-transform: uppercase;
+	font-weight: 700;
+	cursor: pointer;
+	transition: background .2s linear;
+}
+
+/* KORZINA */
+#cartIcon {
+    position: absolute; /* Абсолютное позиционирование */
+    right: 0px; /* Отступ от правого края */
+    top: 50%; /* Выравнивание по вертикали */
+    transform: translateY(-50%); /* Точное выравнивание по центру */
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    background: rgba(255, 150, 130, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: background 0.3s ease, transform 0.2s ease;
+    user-select: none;
+    margin-left: 10px; /* Отступ от поисковой строки */
+}
+
+#cartIcon:hover {
+    background: rgba(210, 148, 13, 0.25);
+    transform: translateY(-50%) scale(1.1);
+}
+
+#cartCount {
+    background-color: #e00000; /* насыщенный красный */
+    color: white;
+    padding: 2px 6px;
+    border-radius: 999px; /* идеально круглый/овальный */
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 18px;
+    min-height: 18px;
+    text-align: center;
+    line-height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+#cartModal {
+    display: none;
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    background: rgba(27, 26, 26, 0.255);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 12px;
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 15px;
+    z-index: 1001;
+    width: 250px;
+    font-family: inherit;
+}
+
+#cartModal.show {
+    display: block;
+}
+
+#cartItems {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px; /* Adjust this value as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-bottom: 10px;
+    
+    /* Apply scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(248, 168, 24, 0.8) rgba(25, 28, 33, 0.2);
+    padding-right: 3px;
+    box-sizing: border-box;
+}
+
+/* Scrollbar styles for Webkit browsers (Chrome, Safari) */
+#cartItems::-webkit-scrollbar {
+    width: 8px;
+}
+
+#cartItems::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    margin: 8px 0;
+}
+
+#cartItems::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, 
+        rgba(248, 168, 24, 0.9) 0%, 
+        rgba(248, 210, 100, 0.8) 100%);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+#cartItems::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, 
+        rgba(248, 180, 40, 1) 0%, 
+        rgba(248, 220, 120, 0.9) 100%);
+    box-shadow: 0 0 6px rgba(248, 168, 24, 0.6);
+}
+
+/* Smooth scrollbar appearance on hover */
+#cartItems {
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.4s ease;
+}
+
+#cartItems:hover {
+    scrollbar-color: rgba(248, 168, 24, 0.8) rgba(25, 28, 33, 0.2);
+}
+
+#cartItems::-webkit-scrollbar-thumb {
+    opacity: 0.5;
+    transition: opacity 0.4s ease; /* Add transition for opacity */
+}
+
+#cartItems:hover::-webkit-scrollbar-thumb {
+    opacity: 1;
+}
+
+#checkoutBtn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    background: rgb(248, 168, 24);
+    border-radius: 10px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: background .2s ease;
+    font-family: inherit;
+}
+
+#checkoutBtn:hover {
+    background: rgb(69, 177, 69);
+}
+
+/* иконка корзины 🛒 немного дрожала */
+@keyframes shake {
+    0% { transform: translateY(-50%) scale(1); }
+    20% { transform: translateY(-50%) scale(1.2); }
+    40% { transform: translateY(-50%) scale(0.8); }
+    60% { transform: translateY(-50%) scale(1.2); }
+    80% { transform: translateY(-50%) scale(0.8); }
+    100% { transform: translateY(-50%) scale(1); }
+}
+
+.shake {
+    animation: shake 0.5s;
+}
+
+/* СОРТИРОВАЛКА */
+.sort-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: white;
+    white-space: nowrap; /* текст не переносится */
+}
+  
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 50px;
+	height: 28px;
+}
+
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0; left: 0;
+	right: 0; bottom: 0;
+	background-color: #ccc;
+	transition: .4s;
+	border-radius: 34px;
+}
+
+.slider::before {
+	position: absolute;
+	content: "";
+	height: 22px;
+	width: 22px;
+	left: 3px;
+	bottom: 3px;
+	background-color: white;
+	transition: .4s;
+	border-radius: 50%;
+}
+
+input:checked + .slider {
+	background-color: #31B545;
+}
+
+input:checked + .slider::before {
+	transform: translateX(22px);
+}
+
+
+ /* Стиль для кнопки Random Sort */
+ #randomSortBtn {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-left: 10px;
+}
+
+/* Анимация при нажатии */
+#randomSortBtn.pressed {
+    transform: scale(0.8) rotate(15deg);
+    opacity: 0.7;
+}
+ 
+/* Кнопка для скрытия фильтров */
+#toggleFiltersBtn {
+    /* margin-left: 10px; */
+    padding: 11px 11px;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(85, 100, 255, 0.2); /* полупрозрачный синий-фиолетовый */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s, transform 0.2s;
+}
+
+#toggleFiltersBtn:hover {
+    background: rgba(85, 100, 255, 0.35);
+    transform: translateY(-1px);
+}
+
+#toggleFiltersBtn:active {
+    background: rgba(85, 100, 255, 0.5);
+    transform: translateY(1px);
+}
+
+
+
+.hidden {
+    display: none;
+}
+
+#closeCartModal {
+    padding: 0 10px;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+#closeCartModal:hover {
+    color: #ff5252;
+    transform: scale(1.2);
+}
+
+.cart-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.close-btn:hover {
+    background: rgba(255, 90, 90, 0.3);
+    transform: rotate(90deg);
+    border-color: rgba(255, 120, 120, 0.5);
+}
+
+/* PAGINATION */
+/* Контейнер пагинации */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px; /* Уменьшили зазор */
+    margin: 30px auto;
+    padding-bottom: 30px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Кнопки пагинации */
+.pagination-btn, .page-number-btn {
+    background: linear-gradient(135deg, rgba(248, 168, 24, 0.12) 0%, rgba(248, 210, 100, 0.05) 100%);
+    border: 1px solid rgba(248, 168, 24, 0.3);
+    color: #f8d264;
+    min-width: 36px; /* Компактный размер */
+    height: 38px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 800;
+    font-size: 14px; /* Чуть меньше шрифт */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(5px);
+    padding: 0 4px;
+}
+
+/* Массивные стрелки */
+.pagination-btn {
+    font-size: 18px;
+    color: #f8a818;
+    background: rgba(248, 168, 24, 0.15); /* Выделим стрелки чуть сильнее */
+}
+
+/* Активная страница */
+.page-number-btn.active {
+    background: linear-gradient(135deg, #f8a818 0%, #f8d264 100%);
+    color: #000;
+    border: none;
+    box-shadow: 0 3px 10px rgba(248, 168, 24, 0.4);
+}
+
+/* Контейнер цифр */
+.page-numbers {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+/* Точки */
+.page-dots {
+    color: rgba(248, 168, 24, 0.6);
+    font-size: 14px;
+    font-weight: bold;
+    width: 15px;
+    text-align: center;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.1;
+}
+
+
+
+/* Стили для выбора категорий */
+.category-selector {
+    position: relative;
+    width: 100%;
+    max-width: 390px;
+    margin: 10px auto 0;
+    z-index: 10;
+}
+
+#categoryToggleBtn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: rgba(25, 28, 33, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+#categoryToggleBtn:hover {
+    background-color: rgba(69, 177, 69, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+#categoryDropdown {
+    position: absolute;
+    width: 100%;
+    /* background-color: rgba(25, 28, 33, 0.9); */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    display: none;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+#categoryDropdown.show {
+    display: block;
+}
+
+.category-option {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-family: 'Fredoka', sans-serif;
+}
+
+.category-option:hover {
+    background-color: rgba(69, 177, 69, 0.3);
+}
+
+.category-option:last-child {
+    border-bottom: none;
+}
+
+/* Анимация для кнопки при открытии */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#categoryDropdown.show {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+
+
+
+.filters-wrapper {
+    display: flex; /* Сделайте его flex-контейнером */
+    flex-wrap: wrap; /* Разрешает перенос на новую строку */
+    gap: 5px; /* Уменьшите расстояние между фильтрами */
+    transition: transform 0.3s ease-in-out; /* Плавный переход для скрытия/появления */
+    justify-content: center; /* Выравнивание кнопок по центру */
+}
+
+.filters-wrapper.hidden-on-scroll {
+    transform: translateY(-200%); /* Сдвигает панель фильтров вверх, скрывая ее */
+}
+
+
+
+
+/* Стили для фильтров */
+/* Обновленные стили для фильтров */
+.filter-container {
+    display: flex;
+    gap: 10px; /* Уменьшил отступ между кнопками */
+    padding: auto;
+    margin-top: 0px;
+    width: calc(100%); 
+    max-width: 390px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box; /* Важно! */
+}
+
+.filter-selector {
+    position: relative;
+    flex: 1;
+    min-width: 0; /* Помогает с переполнением */
+}
+
+.filter-btn {
+    width: 100%;
+    padding: 10px 8px; /* Уменьшил горизонтальные отступы */
+    font-size: 14px;
+    font-weight: bold;
+    background-color: rgba(25, 28, 33, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+    text-align: center;
+    box-sizing: border-box; /* Важно! */
+    white-space: nowrap; /* Текст в одну строку */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Троеточие если не помещается */
+}
+
+.filter-dropdown {
+    position: absolute;
+    width: 100%;
+    background-color: #1a1d23; /* Полностью непрозрачный темный фон */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    display: none;
+    overflow: hidden;
+    margin-top: 5px;
+    z-index: 100;
+    max-height: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(248, 168, 24, 0.8) rgba(25, 28, 33, 0.2);
+    padding-right: 3px;
+    box-sizing: border-box;
+}
+
+/* Для мобильных устройств можно добавить адаптацию */
+@media (max-width: 400px) {
+    .filter-btn {
+        font-size: 13px;
+        padding: 10px 5px;
+    }
+    
+    .filter-option {
+        padding: 10px 8px;
+        font-size: 13px;
+    }
+}
+
+.filter-btn:hover {
+    background-color: rgba(69, 177, 69, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.filter-dropdown.show {
+    display: block;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.filter-option {
+    display: flex; /* Используем flex для всех вариантов */
+    align-items: center;
+    justify-content: center; /* Центрируем по горизонтали */
+    width: 100%;
+    padding: 12px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-family: 'Fredoka', sans-serif;
+    text-align: center; /* Дублируем для совместимости */
+    gap: 10px; /* Расстояние между иконкой и текстом */
+}
+
+.filter-option:hover {
+    background-color: rgba(69, 177, 69, 0.3);
+}
+
+.filter-option:last-child {
+    border-bottom: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+/* Общие стили для скроллбаров в выпадающих списках */
+.filter-dropdown {
+    max-height: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(248, 168, 24, 0.8) rgba(25, 28, 33, 0.2);
+    padding-right: 3px; /* Чтобы контент не заезжал под скроллбар */
+}
+
+/* Стилизация скроллбара для Chrome/Safari */
+.filter-dropdown::-webkit-scrollbar {
+    width: 8px;
+}
+
+.filter-dropdown::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    margin: 8px 0;
+}
+
+.filter-dropdown::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, 
+        rgba(248, 168, 24, 0.9) 0%, 
+        rgba(248, 210, 100, 0.8) 100%);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.2);
+}
+
+.filter-dropdown::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, 
+        rgba(248, 180, 40, 1) 0%, 
+        rgba(248, 220, 120, 0.9) 100%);
+    box-shadow: 0 0 6px rgba(248, 168, 24, 0.6);
+}
+
+/* Анимация скроллбара */
+.filter-dropdown::-webkit-scrollbar-thumb {
+    transition: all 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Плавное появление скроллбара при наведении */
+.filter-dropdown {
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.4s ease;
+}
+
+.filter-dropdown:hover {
+    scrollbar-color: rgba(248, 168, 24, 0.8) rgba(25, 28, 33, 0.2);
+}
+
+.filter-dropdown::-webkit-scrollbar-thumb {
+    opacity: 0.5;
+}
+
+.filter-dropdown:hover::-webkit-scrollbar-thumb {
+    opacity: 1;
+}
+
+/* Общий стиль для картинок и видео */
+.item video.img {
+  width: 100%;         
+  height: 100;       
+  object-fit: cover;   
+  border-radius: 10px;
+  display: block;
+  overflow: hidden;
+}
+
+/* Общий стиль для картинок и видео */
+/* .item video.img {
+  width: auto;       
+  max-width: auto;
+  height: auto;
+  display: block;
+  border-radius: 10px;  
+  object-fit: cover;    
+  overflow: hidden;    
+} */
+
+
+ 
