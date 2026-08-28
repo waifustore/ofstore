@@ -264,22 +264,22 @@ function renderTags(tags) {
     
     // Эмодзи для популярных тегов (можно расширить)
     const tagEmojis = {
+        'alt_girl': '🎸',
+        'asian': '🥢',
         'big_b': '🍒',
+        'black': '🖤',
         'blonde': '💛',
         'cosplay': '🎭',
         'cute': '🥰',
+        'fit': '💪',
+        'goth': '🦇',
+        'latina': '🌺',
+        'lingerie': '🩱',
         'milf': '💋',
         'natural': '🌿',
-        'latina': '???',
-        'asian': '???',
-        'black': '???',
-        'red_hair': '???',
-        'alt_girl': '???',
-        'lingerie': '???',
-        'tattoo': '???',
-        'goth': '???',
-        'fit': '???',
-        'slim': '???',
+        'red_hair': '🔥',
+        'slim': '🧘',
+        'tattoo': '🎨',
     };
     
     tagsList.innerHTML = '';
