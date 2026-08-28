@@ -27,76 +27,23 @@
                 </div>
             </div>
 
-            <div class="filter-container">
                 <div class="filter-selector">
-                    <button id="typeToggleBtn" class="filter-btn">Types ▼</button>
-                    <div id="typeDropdown" class="filter-dropdown hidden scrollable-dropdown">
-                        <button class="filter-option" data-type="all">🌐 All Types</button>
-                        <button class="filter-option" data-type="asian">🔥 Cosplay</button>
-                        <button class="filter-option" data-type="cartoon">📺 Cartoon/Movie </button>
-                        <button class="filter-option" data-type="disney">🏰 Disney</button>
-                        <button class="filter-option" data-type="milf">💦 MILF</button>
-                        <button class="filter-option" data-type="legs">🦵 Feet</button>
-                        <button class="filter-option" data-type="furry">🦊 Furry</button>
-                        <button class="filter-option" data-type="futa">🍆 Futa</button>
-                        <button class="filter-option" data-type="gif">🎞️ AI Gif</button>
-                        <button class="filter-option" data-type="wallpapers">🖼️ 4K Wallpaper</button>
-                        <button class="filter-option" data-type="random">🎲 Random</button>
+                    <button id="tagsToggleBtn" class="filter-btn">🏷️ Tags ▼</button>
+                    <div id="tagsDropdown" class="filter-dropdown hidden scrollable-dropdown">
+                        <div class="tags-header">
+                            <span class="tags-title">🏷️ Select Tags</span>
+                            <button id="clearTagsBtn" class="clear-tags-btn">✕ Clear</button>
+                        </div>
+                        <div class="tags-search-wrapper">
+                            <input type="text" id="tagsSearchInput" placeholder="🔍 Search tags..." class="tags-search-input">
+                        </div>
+                        <div id="tagsList" class="tags-grid"></div>
                     </div>
                 </div>
-                        
-                <div class="filter-selector">
-                    <button id="animeToggleBtn" class="filter-btn">Anime ▼</button>
-                    <div id="animeDropdown" class="filter-dropdown hidden scrollable-dropdown">
-                        <button class="filter-option" data-anime="all">All Anime 🌐</button>
-                        <button class="filter-option" data-anime="titanattack">Attack on Titan 🧱</button>
-                        <button class="filter-option" data-anime="arcane">Arcane 🎭</button>
-                        <button class="filter-option" data-anime="avatar">Avatar 🌊</button>
-                        <button class="filter-option" data-anime="blackclover">Black Clover 🍀</button>
-                        <button class="filter-option" data-anime="bleach">Bleach ⚔️</button>
-                        <button class="filter-option" data-anime="chainsawman">Chainsaw Man 🔪</button>
-                        <button class="filter-option" data-anime="cyberpunk">Cyberpunk 🌆</button>
-                        <button class="filter-option" data-anime="dandadan">Dandadan 👽</button>
-                        <button class="filter-option" data-anime="drstone">Dr Stone 🗿</button>
-                        <button class="filter-option" data-anime="demonslayer">Demon Slayer 👹</button>
-                        <button class="filter-option" data-anime="dragonball">Dragon Ball 🐉</button>
-                        <button class="filter-option" data-anime="dxd">High School DxD 😈</button>
-                        <button class="filter-option" data-anime="evangelion">Evangelion 🤖</button>
-                        <button class="filter-option" data-anime="fairytail">Fairy Tail ✨</button>
-                        <button class="filter-option" data-anime="fireforce">Fire Force 🔥</button>
-                        <button class="filter-option" data-anime="games">Games 🎮</button>
-                        <button class="filter-option" data-anime="genshinimpact">Genshin Impact 🌈</button>
-                        <button class="filter-option" data-anime="goblinslayer">Goblin Slayer 🩸</button>
-                        <button class="filter-option" data-anime="jobless">Mushoku Taisen 🗺️</button>
-                        <button class="filter-option" data-anime="jojo">Jojo Adventure 💎</button>
-                        <button class="filter-option" data-anime="jujutsu">Jujutsu Kaisen 🧙‍♂️</button>
-                        <button class="filter-option" data-anime="killlakill">Kill la Kill ✂️</button>
-                        <button class="filter-option" data-anime="myheroacademia">My Hero Academia 🦸</button>
-                        <button class="filter-option" data-anime="naruto">Naruto 🍥</button>
-                        <button class="filter-option" data-anime="onepiece">One Piece 🏴‍☠️</button>
-                        <button class="filter-option" data-anime="onepunchman">One-Punch Man 👊</button>
-                        <button class="filter-option" data-anime="pokemon">Pokémon ⚡</button>
-                        <button class="filter-option" data-anime="shieldhero">Shield Hero 🛡️</button>
-                        <button class="filter-option" data-anime="sololeveling">Solo Leveling 💀</button>
-                        <button class="filter-option" data-anime="spyfam">Spy x Family 🕵️</button>
-                        <button class="filter-option" data-anime="sds">7 Deadly Sins 🐗</button>
-                        <button class="filter-option" data-anime="starrails">Honkai Star Rail 🚀</button>
-                        <button class="filter-option" data-anime="zelda">Zelda 🏹</button>
-                        <button class="filter-option" data-anime="zzz">Zenless Zone Zero 🎧</button>
-                        <button class="filter-option" data-anime="witcher">The Witcher 🐺</button>
-
-
-
-
-                        
-
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     
-    <!-- Модальное окно вне .top-bar -->
+    <!-- Модальное окно корзины -->
     <div id="cartModal" class="hidden">
         <div class="cart-modal-header">
             <h2>Your Cart</h2>
@@ -107,25 +54,19 @@
         <button id="checkoutBtn">Buy</button>
     </div>
 
-
-    
     <div class="container">
         <div class="inner" id="productsContainer">
-            </div>
+        </div>
     </div>
 
-
-
-
-    <!-- Добавляем контейнер для пагинации -->
+    <!-- Пагинация -->
     <div class="pagination">
         <button id="prevPage" class="pagination-btn"><b>❮</b></button>
         <div id="pageNumbers" class="page-numbers"></div>
         <button id="nextPage" class="pagination-btn"><b>❯</b></button>
     </div>
 
-
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="app.js"></script>
 </body>
-</html> 
+</html>

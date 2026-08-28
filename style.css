@@ -39,9 +39,11 @@ body {
 }
 
 .img {
-	width: 150px;
-	max-width: 100%;
-	height: auto;
+    width: 100%;
+    aspect-ratio: 3 / 4;   /* Соотношение 3:4 (вертикальные) */
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
 }
 
 .item {
@@ -846,4 +848,436 @@ input:checked + .slider::before {
 } */
 
 
- 
+/* Стили для тегов */
+.tags-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.tags-title {
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.clear-tags-btn {
+    background: rgba(255, 80, 80, 0.2);
+    border: 1px solid rgba(255, 80, 80, 0.3);
+    color: #ff6b6b;
+    padding: 4px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    font-family: 'Fredoka', sans-serif;
+}
+
+.clear-tags-btn:hover {
+    background: rgba(255, 80, 80, 0.4);
+    transform: scale(1.05);
+}
+
+.tag-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 12px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 14px;
+}
+
+.tag-option:hover {
+    background: rgba(69, 177, 69, 0.15);
+}
+
+.tag-option.selected {
+    background: rgba(69, 177, 69, 0.25);
+    border-left: 3px solid #31B545;
+}
+
+.tag-option .checkmark {
+    opacity: 0;
+    transition: all 0.3s ease;
+    color: #31B545;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.tag-option.selected .checkmark {
+    opacity: 1;
+}
+
+.tag-option:last-child {
+    border-bottom: none;
+}
+
+/* Кнопка с количеством выбранных тегов */
+#tagsToggleBtn {
+    position: relative;
+}
+
+#tagsToggleBtn .tag-count {
+    background: #31B545;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 8px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+/* Анимация для тегов */
+@keyframes tagSelect {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); background: rgba(69, 177, 69, 0.4); }
+    100% { transform: scale(1); }
+}
+
+.tag-option.selected {
+    animation: tagSelect 0.3s ease;
+}
+
+/* Стили для отображения количества фото */
+.item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 8px 0;
+}
+
+.item-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.image-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 10px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    white-space: nowrap;
+}
+
+.caption {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Стили для корзины с количеством фото */
+#cartItems li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 14px;
+    gap: 8px;
+}
+
+#cartItems li .remove-item {
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    font-size: 14px;
+}
+
+#cartItems li .remove-item:hover {
+    opacity: 1;
+}
+
+/* === ТЕГИ - КРАСИВЫЙ ДИЗАЙН === */
+
+/* Контейнер поиска тегов */
+.tags-search-wrapper {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.tags-search-input {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 13px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    color: white;
+    font-family: 'Fredoka', sans-serif;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.tags-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.tags-search-input:focus {
+    outline: none;
+    border-color: rgba(248, 168, 24, 0.5);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(248, 168, 24, 0.1);
+}
+
+/* Заголовок тегов */
+.tags-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.tags-title {
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 15px;
+    letter-spacing: 0.3px;
+}
+
+.clear-tags-btn {
+    background: rgba(255, 70, 70, 0.15);
+    border: 1px solid rgba(255, 70, 70, 0.25);
+    color: #ff6b6b;
+    padding: 5px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-family: 'Fredoka', sans-serif;
+    letter-spacing: 0.3px;
+}
+
+.clear-tags-btn:hover {
+    background: rgba(255, 70, 70, 0.3);
+    border-color: rgba(255, 70, 70, 0.5);
+    transform: scale(1.05);
+}
+
+.clear-tags-btn:active {
+    transform: scale(0.95);
+}
+
+/* Сетка тегов */
+.tags-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    padding: 10px 12px;
+    max-height: 280px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(248, 168, 24, 0.4) transparent;
+}
+
+/* Стилизация скроллбара для тегов */
+.tags-grid::-webkit-scrollbar {
+    width: 5px;
+}
+
+.tags-grid::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.tags-grid::-webkit-scrollbar-thumb {
+    background: rgba(248, 168, 24, 0.4);
+    border-radius: 10px;
+}
+
+.tags-grid::-webkit-scrollbar-thumb:hover {
+    background: rgba(248, 168, 24, 0.6);
+}
+
+/* Кнопка тега - красивый вариант */
+.tag-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+    font-family: 'Fredoka', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+}
+
+.tag-option::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(248, 168, 24, 0.1), rgba(248, 210, 100, 0.05));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tag-option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+    color: white;
+}
+
+.tag-option:hover::before {
+    opacity: 1;
+}
+
+/* Активный/выбранный тег */
+.tag-option.selected {
+    background: linear-gradient(135deg, rgba(248, 168, 24, 0.25), rgba(248, 210, 100, 0.15));
+    border-color: rgba(248, 168, 24, 0.5);
+    color: #f8d264;
+    box-shadow: 0 2px 12px rgba(248, 168, 24, 0.15);
+    transform: translateY(-1px);
+}
+
+.tag-option.selected::before {
+    opacity: 1;
+}
+
+/* Иконка галочки */
+.tag-option .checkmark {
+    opacity: 0;
+    transform: scale(0.5) rotate(-45deg);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    color: #f8d264;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.tag-option.selected .checkmark {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+/* Количество тегов рядом с названием */
+.tag-option .tag-count {
+    font-size: 11px;
+    opacity: 0.5;
+    margin-left: 4px;
+}
+
+.tag-option.selected .tag-count {
+    opacity: 0.7;
+}
+
+/* Иконка тега */
+.tag-option .tag-icon {
+    margin-right: 8px;
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+.tag-option.selected .tag-icon {
+    opacity: 1;
+}
+
+/* Текст тега */
+.tag-option .tag-text {
+    flex: 1;
+    text-align: left;
+    font-size: 13px;
+}
+
+/* Кнопка тегов - обновленная */
+#tagsToggleBtn {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+#tagsToggleBtn.has-tags {
+    border-color: rgba(248, 168, 24, 0.5);
+    background: rgba(248, 168, 24, 0.1);
+}
+
+#tagsToggleBtn .tag-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8a818;
+    color: #000;
+    border-radius: 50%;
+    min-width: 20px;
+    height: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 6px;
+    padding: 0 6px;
+}
+
+/* Анимация при выборе тега */
+@keyframes tagPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+.tag-option.selected {
+    animation: tagPop 0.3s ease;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 400px) {
+    .tags-grid {
+        grid-template-columns: 1fr;
+        gap: 5px;
+        padding: 8px 10px;
+    }
+    
+    .tag-option {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+}
+
+/* Подсветка при поиске */
+.tag-option.hidden-tag {
+    display: none;
+}
+
+/* Счетчик выбранных тегов */
+.tags-selected-count {
+    display: inline-block;
+    background: rgba(248, 168, 24, 0.2);
+    color: #f8d264;
+    padding: 1px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 6px;
+}

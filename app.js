@@ -8,15 +8,15 @@ tg.MainButton.color = '#31B545';
 const ITEMS_PER_PAGE = 20;
 let currentPage = 1;
 let totalItems = 0;
-let allItems = [];      // Оригинальные DOM-элементы всех товаров
-let filteredItems = []; // Отфильтрованные элементы
+let allItems = [];
+let filteredItems = [];
 let cart = [];
 
 let filters = {
     type: 'all',
-    anime: 'all',
     search: '',
-    sort: 'none'
+    sort: 'none',
+    tags: []
 };
 
 // --- 1. ЗАГРУЗКА ДАННЫХ ---
@@ -40,17 +40,25 @@ function createProductHTML(p) {
         ? `<video src="${p.img_src}" class="img" autoplay loop muted playsinline preload="auto"></video>`
         : `<img src="${p.img_src}" alt="" class="img" loading="lazy">`;
 
+    // Добавляем отображение количества фото
+    const imageCountHTML = p.image_count ? 
+        `<span class="image-count">📸 ${p.image_count}</span>` : '';
+
     return `
         <div class="item">
             ${mediaHTML}
-            <p class="caption">${p.caption}</p>
-            <span class="price">${p.price} ⭐️</span>
+            <div class="item-info">
+                <p class="caption">${p.caption}</p>
+                <div class="item-details">
+                    <span class="price">${p.price} ⭐️</span>
+                    ${imageCountHTML}
+                </div>
+            </div>
             <button class="btn" 
                 data-id="${p.id}" 
                 data-label="${p.label}" 
                 data-price="${p.price}" 
-                data-tags="${p.tags.join(',')}" 
-                data-anime="${p.anime}">Buy</button>
+                data-tags="${p.tags.join(',')}">Buy</button>
         </div>
     `;
 }
@@ -74,15 +82,17 @@ function applyAllFilters() {
             if (!tags.includes(filters.type)) return false;
         }
 
-        // Аниме
-        if (filters.anime !== 'all') {
-            if (btn.getAttribute("data-anime") !== filters.anime) return false;
+        // Теги (множественный выбор)
+        if (filters.tags.length > 0) {
+            const tags = btn.getAttribute("data-tags").split(',');
+            const hasAllTags = filters.tags.every(tag => tags.includes(tag));
+            if (!hasAllTags) return false;
         }
 
         return true;
     });
 
-    applySorting(); // Сортируем то, что осталось
+    applySorting();
     
     totalItems = filteredItems.length;
     currentPage = 1;
@@ -123,7 +133,6 @@ function showPage(page) {
 
     itemsToShow.forEach(item => {
         container.appendChild(item);
-        // Если внутри видео, пробуем запустить (браузеры иногда блокируют)
         const video = item.querySelector('video');
         if (video) video.play().catch(() => {});
     });
@@ -143,27 +152,22 @@ function updatePaginationControls() {
     const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
     pageNumbers.innerHTML = "";
 
-    // Настраиваем стрелки
     if (prevBtn) {
-        prevBtn.innerHTML = "<b>&#10094;</b>"; // Толстая стрелка
+        prevBtn.innerHTML = "<b>&#10094;</b>";
         prevBtn.disabled = (currentPage === 1);
     }
     if (nextBtn) {
-        nextBtn.innerHTML = "<b>&#10095;</b>"; // Толстая стрелка
+        nextBtn.innerHTML = "<b>&#10095;</b>";
         nextBtn.disabled = (currentPage === totalPages || totalPages === 0);
     }
 
-    // Логика формирования: 1 ... текущая ... последняя
     for (let i = 1; i <= totalPages; i++) {
-        // Всегда показываем первую, последнюю и текущую
         if (i === 1 || i === totalPages || i === currentPage) {
             addPageButton(i, pageNumbers);
         } 
-        // Если страница стоит сразу перед или после текущей - тоже показываем (чтобы не было 1 ... 2 ... 3)
         else if (i === currentPage - 1 || i === currentPage + 1) {
             addPageButton(i, pageNumbers);
         }
-        // Ставим многоточие
         else if (i === currentPage - 2 || i === currentPage + 2) {
             const span = document.createElement("span");
             span.className = "page-dots";
@@ -173,7 +177,6 @@ function updatePaginationControls() {
     }
 }
 
-// Вспомогательная функция для создания кнопки
 function addPageButton(i, container) {
     const btn = document.createElement("button");
     btn.className = `page-number-btn ${i === currentPage ? 'active' : ''}`;
@@ -207,7 +210,8 @@ function updateCartDisplay() {
 
     cart.forEach((item, index) => {
         const li = document.createElement("li");
-        li.innerHTML = `${item.label} - ${item.price} ⭐️ 
+        const imageInfo = item.image_count ? ` (${item.image_count} фото)` : '';
+        li.innerHTML = `${item.label}${imageInfo} - ${item.price} ⭐️ 
             <span class="remove-item" onclick="removeFromCart(${index})">❌</span>`;
         cartItems.appendChild(li);
         total += item.price;
@@ -227,7 +231,6 @@ window.removeFromCart = (index) => {
 async function init() {
     const products = await loadProducts();
     
-    // Создаем элементы один раз и храним их в allItems
     allItems = products.map(p => {
         const div = document.createElement('div');
         div.innerHTML = createProductHTML(p);
@@ -237,26 +240,69 @@ async function init() {
         return element;
     });
 
-    // Инициализация UI
+    const allTags = getAllTags(products);
+    renderTags(allTags);
+
     initFilters();
     adjustLayout();
-    applyAllFilters(); // Первая отрисовка
+    applyAllFilters();
+}
+
+function getAllTags(products) {
+    const tagSet = new Set();
+    products.forEach(p => {
+        if (p.tags && Array.isArray(p.tags)) {
+            p.tags.forEach(tag => tagSet.add(tag));
+        }
+    });
+    return Array.from(tagSet).sort();
+}
+
+function renderTags(tags) {
+    const tagsList = document.getElementById('tagsList');
+    if (!tagsList) return;
+    
+    // Эмодзи для популярных тегов (можно расширить)
+    const tagEmojis = {
+        'big_b': '🍒',
+        'blonde': '💛',
+        'cosplay': '🎭',
+        'cute': '🥰',
+        'milf': '💋',
+        'natural': '🌿',
+        'anime': '🎌',
+    };
+    
+    tagsList.innerHTML = '';
+    tags.forEach(tag => {
+        const button = document.createElement('button');
+        button.className = 'tag-option';
+        button.dataset.tag = tag;
+        
+        const emoji = tagEmojis[tag] || '🏷️';
+        
+        button.innerHTML = `
+            <span class="tag-text">
+                <span class="tag-icon">${emoji}</span>
+                ${tag.replace(/_/g, ' ')}
+            </span>
+            <span class="checkmark">✓</span>
+        `;
+        tagsList.appendChild(button);
+    });
 }
 
 function initFilters() {
-    // Поиск
     const searchInput = document.getElementById("searchInput");
     searchInput?.addEventListener("input", (e) => {
         filters.search = e.target.value.toLowerCase();
         applyAllFilters();
     });
 
-    // Универсальный обработчик для всех дропдаунов (Тип, Аниме, Сортировка)
     setupDropdown('typeToggleBtn', 'typeDropdown', 'type');
-    setupDropdown('animeToggleBtn', 'animeDropdown', 'anime');
     setupDropdown('sortToggleBtn', 'sortDropdown', 'sort');
+    setupTagsFilter();
 
-    // Кнопки пагинации
     document.getElementById("prevPage")?.addEventListener("click", () => {
         if (currentPage > 1) showPage(currentPage - 1);
     });
@@ -264,7 +310,6 @@ function initFilters() {
         if (currentPage < Math.ceil(totalItems / ITEMS_PER_PAGE)) showPage(currentPage + 1);
     });
 
-    // Закрытие модалки корзины
     document.getElementById("closeCartModal")?.addEventListener("click", () => {
         document.getElementById("cartModal").classList.remove("show");
     });
@@ -272,7 +317,6 @@ function initFilters() {
         document.getElementById("cartModal").classList.toggle("show");
     });
 
-    // Кнопка купить (Checkout)
     document.getElementById("checkoutBtn")?.addEventListener("click", () => {
         if (cart.length === 0) return;
         tg.sendData(JSON.stringify({
@@ -281,6 +325,12 @@ function initFilters() {
             user: tg.initDataUnsafe?.user
         }));
         tg.close();
+    });
+
+    document.getElementById("clearTagsBtn")?.addEventListener("click", () => {
+        filters.tags = [];
+        updateTagSelectionUI();
+        applyAllFilters();
     });
 }
 
@@ -304,6 +354,105 @@ function setupDropdown(btnId, menuId, filterKey) {
     });
 }
 
+function setupTagsFilter() {
+    const btn = document.getElementById("tagsToggleBtn");
+    const menu = document.getElementById("tagsDropdown");
+    const searchInput = document.getElementById("tagsSearchInput");
+    
+    if (!btn || !menu) return;
+
+    btn.onclick = (e) => {
+        e.stopPropagation();
+        menu.classList.toggle('show');
+        if (menu.classList.contains('show') && searchInput) {
+            setTimeout(() => searchInput.focus(), 100);
+        }
+    };
+
+    // Поиск по тегам
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const tagOptions = menu.querySelectorAll('.tag-option');
+            
+            tagOptions.forEach(opt => {
+                const tagText = opt.querySelector('.tag-text')?.textContent?.toLowerCase() || '';
+                if (query === '' || tagText.includes(query)) {
+                    opt.classList.remove('hidden-tag');
+                } else {
+                    opt.classList.add('hidden-tag');
+                }
+            });
+        });
+
+        // Очистка поиска при закрытии
+        menu.addEventListener('transitionend', () => {
+            if (!menu.classList.contains('show') && searchInput) {
+                searchInput.value = '';
+                const tagOptions = menu.querySelectorAll('.tag-option');
+                tagOptions.forEach(opt => opt.classList.remove('hidden-tag'));
+            }
+        });
+    }
+
+    // Обработка кликов по тегам
+    menu.querySelectorAll('.tag-option').forEach(opt => {
+        opt.onclick = (e) => {
+            e.stopPropagation();
+            const tag = opt.dataset.tag;
+            const index = filters.tags.indexOf(tag);
+            
+            if (index === -1) {
+                filters.tags.push(tag);
+                opt.classList.add('selected');
+            } else {
+                filters.tags.splice(index, 1);
+                opt.classList.remove('selected');
+            }
+            
+            updateTagSelectionUI();
+            applyAllFilters();
+            
+            // Вибрация для телефона
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('light');
+            }
+        };
+    });
+
+    // Закрытие по клику вне
+    document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target) && e.target !== btn) {
+            menu.classList.remove('show');
+        }
+    });
+}
+
+function updateTagSelectionUI() {
+    const btn = document.getElementById("tagsToggleBtn");
+    const menu = document.getElementById("tagsDropdown");
+    if (!btn || !menu) return;
+
+    // Обновляем кнопку
+    if (filters.tags.length === 0) {
+        btn.innerHTML = '🏷️ Tags ▼';
+        btn.classList.remove('has-tags');
+    } else {
+        btn.innerHTML = `🏷️ Tags <span class="tag-badge">${filters.tags.length}</span> ▼`;
+        btn.classList.add('has-tags');
+    }
+
+    // Обновляем состояние опций
+    menu.querySelectorAll('.tag-option').forEach(opt => {
+        const tag = opt.dataset.tag;
+        if (filters.tags.includes(tag)) {
+            opt.classList.add('selected');
+        } else {
+            opt.classList.remove('selected');
+        }
+    });
+}
+
 function adjustLayout() {
     const topBar = document.querySelector('.top-bar');
     const container = document.querySelector('.container');
@@ -312,7 +461,6 @@ function adjustLayout() {
     }
 }
 
-// Скрытие фильтров при скролле
 window.addEventListener('scroll', () => {
     const wrapper = document.querySelector('.filters-wrapper');
     if (window.scrollY > 20) {
