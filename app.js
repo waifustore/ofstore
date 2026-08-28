@@ -270,7 +270,16 @@ function renderTags(tags) {
         'cute': '🥰',
         'milf': '💋',
         'natural': '🌿',
-        'anime': '🎌',
+        'latina': '???',
+        'asian': '???',
+        'black': '???',
+        'red_hair': '???',
+        'alt_girl': '???',
+        'lingerie': '???',
+        'tattoo': '???',
+        'goth': '???',
+        'fit': '???',
+        'slim': '???',
     };
     
     tagsList.innerHTML = '';
