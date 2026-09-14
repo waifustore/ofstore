@@ -267,6 +267,7 @@ function renderTags(tags) {
         'ai': '🤖',
         'alt_girl': '🖤',
         'asian': '🍣',
+        'arab': '🥷',
         'big_b': '🍒',
         'big_lips': '💋',
         'black': '🍫',
